@@ -11,7 +11,8 @@
 \ProvidesClass{whitepaper}[2010/10/22 GWA White Paper Class]
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{memoir}}
 \ProcessOptions
-\LoadClass[onecolumn,oneside,final,article]{memoir}
+\LoadClass[onecolumn,oneside,final]{memoir}
+\RequirePackage{datetime}
 
 % 22 Oct 2010 : GWA : Set up simple chapter headings.
 
@@ -48,7 +49,7 @@
 % \setlength{\footskip}{36pt}
 % \setlength{\headheight}{0pt}
 
-\setheadfoot{0.1pt}{36pt}
+\setheadfoot{36pt}{36pt}
 
 % 22 Oct 2010 : GWA : Used to be:
 % \setlength{\marginparsep}{0.5cm}
@@ -69,14 +70,29 @@
   \def\shortciteA{\def\citeauthoryear##1##2##3{##2}\@internalcite}
   \def\citeyear{\def\citeauthoryear##1##2##3{##3}\@internalcite}
 
+\mmddyyyydate
 \makechapterstyle{proposal}{%
-  \renewcommand{\chapterheadstart}{} 
+  \renewcommand{\chapterheadstart}{}
   \renewcommand{\printchaptername}{} 
   \renewcommand{\chapternamenum}{} 
   \renewcommand{\printchapternum}{} 
   \renewcommand{\afterchapternum}{} 
-  \renewcommand{\printchaptertitle}[1]{}
-  \renewcommand{\afterchaptertitle}{}
+  \renewcommand{\printchaptertitle}[1]{
+\noindent\begin{minipage}[t]{0.8\textwidth}
+\vspace{0pt}
+\raggedright
+\Large\scshape\MakeUppercase{##1}
+\vspace*{0.15in}
+\end{minipage}
+\begin{minipage}[t]{0.18\textwidth}
+\vspace{0pt}
+\raggedleft
+{\small \scshape Whitepaper
+\today}
+\end{minipage}
+{\large\theauthors}
+}
+  \renewcommand{\afterchaptertitle}{\vspace{0.5\onelineskip} \hrule \vspace{0.5\onelineskip}}
 } 
 \makechapterstyle{letter}{%
   \renewcommand{\chapterheadstart}{} 
@@ -89,7 +105,7 @@
 } 
 \definecolor{shadecolor}{gray}{0.9}
 \newcommand{\proposalsec}[1]{%
-  \large\bfseries\raggedright #1
+  \large\bfseries\scshape\raggedright #1
 }
 \setsecheadstyle{\proposalsec}
 \nonzeroparskip
@@ -98,9 +114,9 @@
 \chapterstyle{proposal}
 
 % 26 Oct 2010 : GWA : Section styles.
-\setsecnumformat{\csname the#1\endcsname\space---\space}
+\setsecnumformat{}
 \setbeforesecskip{-2.0ex plus -0.5ex minus -0.2ex}
-\setaftersecskip{1.0ex plus 0.2ex minus 0.1ex}
+\setaftersecskip{0.1ex plus 0.1ex minus 0.1ex}
 
 % 26 Oct 2010 : GWA : Subsection styles.
 \setcounter{secnumdepth}{2}
@@ -132,14 +148,20 @@
   {\end{list}}
 
 \copypagestyle{whitepaper}{headings}
-\addtopsmarks{whitepaper}{}{%
-\nouppercaseheads
-\createmark{chapter}{left}{nonumber}{}{}}
-\makeoddhead{whitepaper}{{\scshape\leftmark}}{}{{\scshape Whitepaper}}
-\makeevenhead{whitepaper}{{\scshape\leftmark}}{}{{\scshape Whitepaper}}
+%\addtopsmarks{whitepaper}{}{%
+%\nouppercaseheads
+%\createmark{chapter}{left}{nonumber}{}{}}
+\makeoddhead{whitepaper}{{\scshape \small \shorttitle}}{}{{\scshape \small \shortauthors}}
+\makeevenhead{whitepaper}{{\scshape \small \shorttitle}}{}{{\scshape \small \shortauthors}}
 \makeoddfoot{whitepaper}{}{\thepage}{}
 \makeevenfoot{whitepaper}{}{\thepage}{}
 
 \copypagestyle{emptywhitepaper}{whitepaper}
 \makeoddfoot{emptywhitepaper}{}{}{}
 \makeevenfoot{emptywhitepaper}{}{}{}
+
+\copypagestyle{chapter}{whitepaper}
+\makeoddfoot{chapter}{}{}{}
+\makeevenfoot{chapter}{}{}{}
+\makeoddhead{chapter}{}{}{}
+\makeevenhead{chapter}{}{}{}
